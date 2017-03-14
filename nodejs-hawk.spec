@@ -7,7 +7,7 @@
 
 Name:       %{?scl_prefix}nodejs-hawk
 Version:    3.1.3
-Release:    1%{?dist}
+Release:    2%{?dist}
 Summary:    HTTP Hawk authentication scheme
 License:    BSD
 URL:        https://github.com/hueniverse/hawk
@@ -17,7 +17,7 @@ ExclusiveArch: %{ix86} x86_64 %{arm} noarch
 
 BuildRequires:  %{?scl_prefix}nodejs-devel
 
-#Patch1: Deminified-crypto-functions.patch 
+Patch1: Deminified-crypto-functions.patch 
 
 %description
 Hawk is an HTTP authentication scheme using a message authentication code (MAC)
@@ -25,7 +25,7 @@ algorithm to provide partial HTTP request cryptographic verification.
 
 %prep
 %setup -q -n package
-#%patch1 -p1
+%patch1 -p3
 #fix perms
 chmod 0644 README.md LICENSE dist/* example/* images/* lib/* *.json
 
@@ -47,6 +47,9 @@ cp -pr lib dist package.json component.json %{buildroot}%{nodejs_sitelib}/hawk
 %doc README.md LICENSE example images
 
 %changelog
+* Tue Feb 28 2017 Zuzana Svetlikova <zsvetlik@redhat.com> - 3.1.3-2
+- Deminify bundled crypto-js (RHBZ#1419660)
+
 * Tue Sep 13 2016 Zuzana Svetlikova <zsvetlik@redhat.com> - 3.1.3-1
 - Updated with script
 
