@@ -2,16 +2,18 @@
 %{!?scl:%global pkg_name %{name}}
 %{?nodejs_find_provides_and_requires}
 
+%global npm_name hawk
+
 # this will not create .orig file
 #%global _default_patch_flags --no-backup-if-mismatch
 
 Name:       %{?scl_prefix}nodejs-hawk
 Version:    3.1.3
-Release:    2%{?dist}
+Release:    3%{?dist}
 Summary:    HTTP Hawk authentication scheme
 License:    BSD
 URL:        https://github.com/hueniverse/hawk
-Source0:    http://registry.npmjs.org/hawk/-/hawk-%{version}.tgz
+Source0:    https://github.com/hueniverse/hawk/archive/v%{version}.tar.gz
 BuildArch:  noarch
 ExclusiveArch: %{ix86} x86_64 %{arm} noarch
 
@@ -24,8 +26,8 @@ Hawk is an HTTP authentication scheme using a message authentication code (MAC)
 algorithm to provide partial HTTP request cryptographic verification.
 
 %prep
-%setup -q -n package
-%patch1 -p3
+%setup -q -n %{npm_name}-%{version}
+%patch1 -p1
 #fix perms
 chmod 0644 README.md LICENSE dist/* example/* images/* lib/* *.json
 
@@ -47,6 +49,10 @@ cp -pr lib dist package.json component.json %{buildroot}%{nodejs_sitelib}/hawk
 %doc README.md LICENSE example images
 
 %changelog
+* Wed Mar 01 2017 Zuzana Svetlikova <zsvetlik@redhat.com> - 3.1.3-3
+- Fix patch
+- Package from GH
+
 * Tue Feb 28 2017 Zuzana Svetlikova <zsvetlik@redhat.com> - 3.1.3-2
 - Deminify bundled crypto-js (RHBZ#1419660)
 
